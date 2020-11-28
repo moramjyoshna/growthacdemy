@@ -1,7 +1,7 @@
 /*
  * package com.academy.growth.controller;
  * 
- * import java.util.ArrayList; import java.util.List; import java.util.Optional;
+ * import java.util.Optional;
  * 
  * import org.slf4j.Logger; import org.slf4j.LoggerFactory; import
  * org.springframework.beans.factory.annotation.Autowired; import
@@ -30,10 +30,12 @@
  * enrollmentService .cancelEnrollment(enrollmentId);
  * CancelEnrollmentResponseDTO ailmentList = new CancelEnrollmentResponseDTO();
  * if (enrollmentListOptional.isPresent()) { ailmentList =
- * enrollmentListOptional.get(); if (ailmentList.) { throw new
- * EnrollmentIdNotFoundException(GrowthAcademyConstants.
- * ENROLLMENT_INFO_NOT_EXIST); } } return new ResponseEntity<>(ailmentList,
- * HttpStatus.OK);
+ * enrollmentListOptional.get(); }
+ * 
+ * 
+ * throw new EnrollmentIdNotFoundException(GrowthAcademyConstants.
+ * ENROLLMENT_INFO_NOT_EXIST); } return new
+ * ResponseEntity<>(ailmentList,HttpStatus.OK);
  * 
  * }
  * 

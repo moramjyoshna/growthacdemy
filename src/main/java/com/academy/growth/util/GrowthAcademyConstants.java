@@ -1,7 +1,7 @@
 package com.academy.growth.util;
 
 public class GrowthAcademyConstants {
-
+	
 	private GrowthAcademyConstants() {
 		throw new IllegalStateException("Utility class");
 	}
@@ -15,4 +15,8 @@ public class GrowthAcademyConstants {
 	public static final String CANCEL_ENROLLMENT_CONTROLLER = "Inside cancel enrollment controller";
 	public static final String ENROLLMENT_INFO_NOT_EXIST = "Enrollment ID doesnot exists";
 	public static final String CANCEL_ENROLLMENTT_SERVICE = "Inside cancel Enrollment Service";
+	public static final Integer STATUS_CODE_OK = 200;
+	public static final String LOGIN_SERVICE = "Inside training service";
+	public static final String LOGIN_CONTROLLER = "Inside Training controller";
+
 }
