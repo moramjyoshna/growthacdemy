@@ -61,8 +61,8 @@ public class EnrollmentController {
 	 * @throws StudentNotFoundException thrown when student not found
 	 * @return EnrollmentsResponseDto contains enrollment history grouped by the enrollment status.
 	 */
-	@GetMapping("/enrollments/{studentId}")
-	public Map<String, List<EnrollmentsResponseDto>> getListofEnrollments(@RequestParam("studentId") Integer studentId)
+	@GetMapping("/student/{studentId}/enrollments")
+	public Map<String, List<EnrollmentsResponseDto>> getListofEnrollments(@PathVariable("studentId") Integer studentId)
 			throws StudentNotFoundException {
 		return enrollmentService.getListofEnrollments(studentId);
 	}
