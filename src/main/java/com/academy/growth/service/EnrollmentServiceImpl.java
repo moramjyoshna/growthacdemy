@@ -1,11 +1,11 @@
-<<<<<<< HEAD
 package com.academy.growth.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,8 @@ import com.academy.growth.util.GrowthAcademyConstants;
 
 @Service
 public class EnrollmentServiceImpl implements EnrollmentService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
 
 	@Autowired
 	TrainingCalendarRepository trainingCalendarRepository;
@@ -35,39 +37,45 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
 	@Override
 	public EnrollmentResponseDto enroll(EnrollmentRequestDto enrollmentRequestDto) throws EnrollmentException {
-
+		
+		//Get Training details based on training id
 		Optional<TrainingCalendar> traingCalendarDetails = trainingCalendarRepository
 				.findByTrainingId(enrollmentRequestDto.getTrainingId());
 
-		Integer count = studentEnrollmentRepository.getScheduledCount(enrollmentRequestDto.getStudentId(), "SCHEDULED");
-
-		System.out.println("Count is :" + count);
-
-		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		LocalDateTime currentDate = LocalDateTime.now();
-		LocalDateTime twoDaysBefore = currentDate.minusDays(2);
-		LocalDateTime twentyDaysAfter = currentDate.plusDays(20);
-		LocalDateTime courseStartDate = traingCalendarDetails.get().getStartDate().toInstant()
-				.atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-		if (count >= 3) {
-			throw new EnrollmentException(GrowthAcademyConstants.COURSE_ENROLLMENT_EXCEEDED);
-		}
-
 		if (!traingCalendarDetails.isPresent()) {
+			logger.info(GrowthAcademyConstants.TRAINING_DOES_NOT_EXISTS);
 			throw new EnrollmentException(GrowthAcademyConstants.TRAINING_DOES_NOT_EXISTS);
 		}
-
+		
+		//Get Course details based on course code
 		Optional<Course> courseDetails = courseRepository.findByCourseCode(traingCalendarDetails.get().getCourseCode());
 
 		if (!courseDetails.isPresent()) {
+			logger.info(GrowthAcademyConstants.COURSE_DOES_NOT_EXISTS);
 			throw new EnrollmentException(GrowthAcademyConstants.COURSE_DOES_NOT_EXISTS);
 		}
 
-		if (courseStartDate.isBefore(currentDate) || courseStartDate.isAfter(twoDaysBefore)
-				|| courseStartDate.isAfter(twentyDaysAfter)) {
+		LocalDateTime currentDate = LocalDateTime.now();
+		LocalDateTime twoDaysAfterCurrentDate = currentDate.plusDays(2);
+		LocalDateTime courseStartDate = traingCalendarDetails.get().getStartDate().toInstant()
+				.atZone(ZoneId.systemDefault()).toLocalDateTime();
+		//LocalDateTime twentyDaysAfterCurrentDate = courseStartDate.minusDays(20);
+		
+		
+		if (courseStartDate.isBefore(currentDate) || courseStartDate.isBefore(twoDaysAfterCurrentDate)) {
+			logger.info(GrowthAcademyConstants.CANNOT_EROLL_TO_COURSE);
 			throw new EnrollmentException(GrowthAcademyConstants.CANNOT_EROLL_TO_COURSE);
 		}
+		
+		//Get the count of the no of scheduled courses for the student, if any
+		Integer count = studentEnrollmentRepository.getScheduledCoursesCount(enrollmentRequestDto.getStudentId(), "SCHEDULED");
+		
+		if (count >= 3) {
+			logger.info(GrowthAcademyConstants.COURSE_ENROLLMENT_EXCEEDED);
+			throw new EnrollmentException(GrowthAcademyConstants.COURSE_ENROLLMENT_EXCEEDED);
+		}
+		
+		
 		
 		Enrollment enrollment = new Enrollment();
 		enrollment.setCourseCode(traingCalendarDetails.get().getCourseCode());
