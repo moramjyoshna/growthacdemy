@@ -17,7 +17,7 @@ public class Enrollment {
 	private Integer studentId;
 	private String enrollmentStatus;
 	private Integer trainingId;
-	private Integer courseId;
+	private String courseCode;
 
 	public Integer getEnrollmentId() {
 		return enrollmentId;
@@ -59,12 +59,12 @@ public class Enrollment {
 		this.trainingId = trainingId;
 	}
 
-	public Integer getCourseId() {
-		return courseId;
+	public String getCourseCode() {
+		return courseCode;
 	}
 
-	public void setCourseId(Integer courseId) {
-		this.courseId = courseId;
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
 	}
 
 }
