@@ -19,6 +19,7 @@ public class TrainingCalendar {
 	private Date startDate;
 	private Date endDate;
 	private String courseCode;
+	
 	public Integer getTrainingId() {
 		return trainingId;
 	}
