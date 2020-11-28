@@ -52,10 +52,4 @@ class EnrollmentControllerTest {
 		Assert.assertEquals("200", actual.getStatusCode());
 	}
 
-	@Test
-	void testUpdateEnrollmentFail() throws InvalidEnrollmentIdException, DuplicateEnrollmentException {
-		Mockito.when(enrollmentService.updateEnrollment(Mockito.any())).thenReturn(updateEnrollmentResponseDto);
-		UpdateEnrollmentResponseDto actual = enrollmentService.updateEnrollment(updateEnrollmentRequestDto1);
-		Assert.assertEquals("200", actual.getStatusCode());
-	}
 }

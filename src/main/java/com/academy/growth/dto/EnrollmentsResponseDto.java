@@ -1,31 +1,19 @@
-package com.academy.growth.entity;
+package com.academy.growth.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Table
-@Entity
-public class Enrollment {
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+public class EnrollmentsResponseDto {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer enrollmentId;
 	private String courseName;
 	private Integer studentId;
 	private String enrollmentStatus;
 	private Integer trainingId;
 	private String courseCode;
-
-	public Integer getEnrollmentId() {
-		return enrollmentId;
-	}
-
-	public void setEnrollmentId(Integer enrollmentId) {
-		this.enrollmentId = enrollmentId;
-	}
 
 	public String getCourseName() {
 		return courseName;
