@@ -17,4 +17,16 @@ public class GlobalExceptionHandler extends Exception {
 		ErrorResponse error = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
+	
+	@ExceptionHandler(InvalidEnrollmentIdException.class)
+	public ResponseEntity<ErrorResponse> invalidEnrollmentIdException(InvalidEnrollmentIdException e, WebRequest request) {
+		ErrorResponse error = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(error, HttpStatus.OK);
+	}
+	
+	@ExceptionHandler(DuplicateEnrollmentException.class)
+	public ResponseEntity<ErrorResponse> duplicateEnrollmentException(DuplicateEnrollmentException e, WebRequest request) {
+		ErrorResponse error = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(error, HttpStatus.OK);
+	}
 }

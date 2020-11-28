@@ -1,6 +1,7 @@
 package com.academy.growth.entity;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,8 +17,8 @@ public class TrainingCalendar {
 	private Integer trainingId;
 	private String trainerName;
 	private Integer tainingDuration;
-	private Timestamp startDate;
-	private Timestamp endDate;
+	private Date startDate;
+	private Date endDate;
 	private String courseCode;
 
 	public Integer getTrainingId() {
@@ -44,7 +45,7 @@ public class TrainingCalendar {
 		this.tainingDuration = tainingDuration;
 	}
 
-	public Timestamp getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
@@ -52,7 +53,7 @@ public class TrainingCalendar {
 		this.startDate = startDate;
 	}
 
-	public Timestamp getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
