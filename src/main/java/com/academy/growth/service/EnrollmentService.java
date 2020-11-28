@@ -24,6 +24,6 @@ public interface EnrollmentService {
 
 	public UpdateEnrollmentResponseDto updateEnrollment(UpdateEnrollmentRequestDto updateEnrollmentResponseDto) throws InvalidEnrollmentIdException, DuplicateEnrollmentException;
 	
-	Optional<CancelEnrollmentResponseDTO> cancelEnrollment(Integer enrollmentId) throws EnrollmentIdNotFoundException;
+	public CancelEnrollmentResponseDTO cancelEnrollment(Integer enrollmentId) throws EnrollmentIdNotFoundException;
 
 }

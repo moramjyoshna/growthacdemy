@@ -67,6 +67,15 @@ public class EnrollmentController {
 		return enrollmentService.getListofEnrollments(studentId);
 	}
 	
+	/**
+	 * This method updates the training if existing user wants to change the existing trainingId
+	 * 
+	 * @author Manisha
+	 * @param updateEnrollmentRequestDto
+	 * 
+	 * @throws InvalidEnrollmentIdException when EnrollmentID not found in database & DuplicateEnrollmentException when user is updating with same existing session
+	 * @return UpdateEnrollmentResponseDto will return the response of successfully updated the Training 
+	 */
 	@PutMapping("/enrollments/re-enroll")
 	public ResponseEntity<UpdateEnrollmentResponseDto> updateEnrollment(@RequestBody UpdateEnrollmentRequestDto updateEnrollmentRequestDto) throws InvalidEnrollmentIdException, DuplicateEnrollmentException
 	{
@@ -74,11 +83,11 @@ public class EnrollmentController {
 		return new ResponseEntity<>(enrollmentService.updateEnrollment(updateEnrollmentRequestDto), HttpStatus.OK);
 	}
 
-	@PostMapping("/cancel/{diagnosisId}")
-	public ResponseEntity<Optional<CancelEnrollmentResponseDTO>> cancelEnrollment(@PathVariable Integer enrollmentId)
+	@PostMapping("/cancel/{enrollmentId}")
+	public ResponseEntity<CancelEnrollmentResponseDTO> cancelEnrollment(@RequestParam("enrollmentId") Integer enrollmentId)
 			throws EnrollmentIdNotFoundException {
 		logger.info(GrowthAcademyConstants.ENROLLMENT_INFO_NOT_EXIST);
-		Optional<CancelEnrollmentResponseDTO> enrollment = enrollmentService.cancelEnrollment(enrollmentId);
+		CancelEnrollmentResponseDTO enrollment = enrollmentService.cancelEnrollment(enrollmentId);
 		return new ResponseEntity<>(enrollment, HttpStatus.OK);
 	}
 
