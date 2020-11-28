@@ -8,19 +8,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.academy.growth.exception.AuthenticationFailedException;
-import com.academy.growth.exception.InvalidEmailIdException;
-import com.academy.growth.controller.LoginController;
 import com.academy.growth.dto.LoginRequestDTO;
 import com.academy.growth.dto.LoginResponseDTO;
 import com.academy.growth.entity.Student;
+import com.academy.growth.exception.AuthenticationFailedException;
+import com.academy.growth.exception.InvalidEmailIdException;
 import com.academy.growth.repository.StudentRepository;
 import com.academy.growth.util.GrowthAcademyConstants;
 
 @Service
 public class LoginServiceImpl implements LoginService {
 	private static final Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
-	
+
 	@Autowired
 	StudentRepository studentRepository;
 
