@@ -1,10 +1,10 @@
 package com.academy.growth.exception;
 
-public class InfoException extends Exception {
-
+public class InvalidEmailIdException extends Exception {
 	private static final long serialVersionUID = 1L;
 
-	public InfoException(String message) {
+	public InvalidEmailIdException(String message) {
 		super(message);
 	}
+
 }
