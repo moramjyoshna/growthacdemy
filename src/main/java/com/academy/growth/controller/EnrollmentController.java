@@ -50,7 +50,17 @@ public class EnrollmentController {
 		EnrollmentResponseDto enrollmentResponseDto = enrollmentService.enroll(enrollmentRequestDto);
 		return new ResponseEntity<>(enrollmentResponseDto, HttpStatus.CREATED);
 	}
-
+	
+	
+	/**
+	 * This method views the student's enrollment history grouped by the enrollment status
+	 * 
+	 * @author swathi
+	 * @param studentId contains studentId
+	 * 
+	 * @throws StudentNotFoundException thrown when student not found
+	 * @return EnrollmentsResponseDto contains enrollment history grouped by the enrollment status.
+	 */
 	@GetMapping("/enrollments/{studentId}")
 	public Map<String, List<EnrollmentsResponseDto>> getListofEnrollments(@RequestParam("studentId") Integer studentId)
 			throws StudentNotFoundException {
