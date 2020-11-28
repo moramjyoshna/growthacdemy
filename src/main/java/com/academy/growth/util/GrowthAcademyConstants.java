@@ -5,7 +5,10 @@ public class GrowthAcademyConstants {
 	private GrowthAcademyConstants() {
 		throw new IllegalStateException("Utility class");
 	}
-
+	public static final String TRAINING_DOES_NOT_EXISTS = "No such training exists presently";
+	public static final String COURSE_DOES_NOT_EXISTS = "No such course exists presently";
+	public static final String COURSE_ENROLLMENT_EXCEEDED = "Soory, you have exceeded the Scheduled courses you can enroll";
+	public static final String CANNOT_EROLL_TO_COURSE = "Sorry, You cannot enroll to course now";
 	public static final String INVALID_EMAIL = "please enter a valid email Id";
 	public static final String INVALID_STUDENT = "Invalid Username/Password";
 	public static final String LOGIN_SUCCESS = "Student logged in successfully";
