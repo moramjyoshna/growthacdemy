@@ -1,12 +1,5 @@
 package com.academy.growth.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class EnrollmentsResponseDto {
 
 	private String courseName;

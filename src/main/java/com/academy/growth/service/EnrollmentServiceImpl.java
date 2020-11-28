@@ -1,47 +1,39 @@
 package com.academy.growth.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.academy.growth.dto.UpdateEnrollmentRequestDto;
-import com.academy.growth.dto.UpdateEnrollmentResponseDto;
-import com.academy.growth.entity.Enrollment;
-import com.academy.growth.exception.DuplicateEnrollmentException;
-import com.academy.growth.exception.InvalidEnrollmentIdException;
-import com.academy.growth.repository.EnrollmentRepository;
-import com.academy.growth.util.GrowthAcademyConstants;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 
 import com.academy.growth.dto.CancelEnrollmentResponseDTO;
 import com.academy.growth.dto.EnrollmentRequestDto;
 import com.academy.growth.dto.EnrollmentResponseDto;
 import com.academy.growth.dto.EnrollmentsResponseDto;
+import com.academy.growth.dto.UpdateEnrollmentRequestDto;
+import com.academy.growth.dto.UpdateEnrollmentResponseDto;
 import com.academy.growth.entity.Course;
-
 import com.academy.growth.entity.Enrollment;
 import com.academy.growth.entity.Student;
 import com.academy.growth.entity.TrainingCalendar;
+import com.academy.growth.exception.DuplicateEnrollmentException;
 import com.academy.growth.exception.EnrollmentException;
 import com.academy.growth.exception.EnrollmentIdNotFoundException;
+import com.academy.growth.exception.InvalidEnrollmentIdException;
 import com.academy.growth.exception.StudentNotFoundException;
 import com.academy.growth.repository.CourseRepository;
-
 import com.academy.growth.repository.EnrollmentRepository;
 import com.academy.growth.repository.StudentRepository;
 import com.academy.growth.repository.TrainingCalendarRepository;
+import com.academy.growth.util.GrowthAcademyConstants;
 
 @Service
 public class EnrollmentServiceImpl implements EnrollmentService {
@@ -56,7 +48,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 
 	@Autowired
 	EnrollmentRepository enrollmentRepository;
-	
+
 	@Autowired
 	StudentRepository studentRepository;
 
@@ -84,25 +76,26 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		LocalDateTime twoDaysAfterCurrentDate = currentDate.plusDays(2);
 		LocalDateTime courseStartDate = traingCalendarDetails.get().getStartDate().toInstant()
 				.atZone(ZoneId.systemDefault()).toLocalDateTime();
-		// LocalDateTime twentyDaysAfterCurrentDate = courseStartDate.minusDays(20);
 
 		if (courseStartDate.isBefore(currentDate) || courseStartDate.isBefore(twoDaysAfterCurrentDate)) {
 			logger.info(GrowthAcademyConstants.CANNOT_EROLL_TO_COURSE);
 			throw new EnrollmentException(GrowthAcademyConstants.CANNOT_EROLL_TO_COURSE);
 		}
-		
-		//Get the count of the no of scheduled courses for the student, if any
-		Integer count = enrollmentRepository.getScheduledCoursesCount(enrollmentRequestDto.getStudentId(), GrowthAcademyConstants.SCHEDULED);
-		
+
+		// Get the count of the no of scheduled courses for the student, if any
+		Integer count = enrollmentRepository.getScheduledCoursesCount(enrollmentRequestDto.getStudentId(),
+				GrowthAcademyConstants.SCHEDULED);
+
 		if (count >= 3) {
 			logger.info(GrowthAcademyConstants.COURSE_ENROLLMENT_EXCEEDED);
 			throw new EnrollmentException(GrowthAcademyConstants.COURSE_ENROLLMENT_EXCEEDED);
 		}
-		
-		Optional<Enrollment> enrollmentStatus = enrollmentRepository.checkEnrollmentStatus(enrollmentRequestDto.getStudentId(), enrollmentRequestDto.getTrainingId(), GrowthAcademyConstants.SCHEDULED, 
-				GrowthAcademyConstants.IN_PROGRESS);
-		
-		if(enrollmentStatus.isPresent()) {
+
+		Optional<Enrollment> enrollmentStatus = enrollmentRepository.checkEnrollmentStatus(
+				enrollmentRequestDto.getStudentId(), enrollmentRequestDto.getTrainingId(),
+				GrowthAcademyConstants.SCHEDULED, GrowthAcademyConstants.IN_PROGRESS);
+
+		if (enrollmentStatus.isPresent()) {
 			throw new EnrollmentException(GrowthAcademyConstants.COURSE_ALREADY_ENROLLED);
 		}
 		Enrollment enrollment = new Enrollment();
@@ -166,31 +159,31 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 			throw new StudentNotFoundException(GrowthAcademyConstants.STUDENT_NOT_FOUND);
 		} else {
 
-			Map<String, List<EnrollmentsResponseDto>> enrollmentResponse = responseList.stream()
-					.collect(Collectors.groupingBy(EnrollmentsResponseDto::getEnrollmentStatus));
-
-			return enrollmentResponse;
+			return responseList.stream().collect(Collectors.groupingBy(EnrollmentsResponseDto::getEnrollmentStatus));
 		}
 	}
-	
+
 	@Override
-	public UpdateEnrollmentResponseDto updateEnrollment(UpdateEnrollmentRequestDto updateEnrollmentRequestDto) throws InvalidEnrollmentIdException, DuplicateEnrollmentException {
+	public UpdateEnrollmentResponseDto updateEnrollment(UpdateEnrollmentRequestDto updateEnrollmentRequestDto)
+			throws InvalidEnrollmentIdException, DuplicateEnrollmentException {
 		UpdateEnrollmentResponseDto updateEnrollmentResponseDto = new UpdateEnrollmentResponseDto();
-		
-		Optional<Enrollment> enrolledRecord = enrollmentRepository.findByEnrollmentId(updateEnrollmentRequestDto.getEnrollmentId()); 
-		  if(enrolledRecord.isPresent()) {
-			 if (updateEnrollmentRequestDto.getTrainingId() != enrolledRecord.get().getTrainingId()) 
-			 {
-			  enrolledRecord.get().setTrainingId(updateEnrollmentRequestDto.getTrainingId());
-			  enrollmentRepository.save(enrolledRecord.get());
-			  }else throw new DuplicateEnrollmentException(GrowthAcademyConstants.ALREADY_ENROLLED_EXCEPTION);
-			}else {
-				throw new InvalidEnrollmentIdException(GrowthAcademyConstants.NO_ENROLLMENT_ID_EXCEPTION);
+
+		Optional<Enrollment> enrolledRecord = enrollmentRepository
+				.findByEnrollmentId(updateEnrollmentRequestDto.getEnrollmentId());
+		if (enrolledRecord.isPresent()) {
+			if (updateEnrollmentRequestDto.getTrainingId() != enrolledRecord.get().getTrainingId()) {
+				enrolledRecord.get().setTrainingId(updateEnrollmentRequestDto.getTrainingId());
+				enrollmentRepository.save(enrolledRecord.get());
+			} else {
+				throw new DuplicateEnrollmentException(GrowthAcademyConstants.ALREADY_ENROLLED_EXCEPTION);
 			}
+		} else {
+			throw new InvalidEnrollmentIdException(GrowthAcademyConstants.NO_ENROLLMENT_ID_EXCEPTION);
+		}
 		updateEnrollmentResponseDto.setMessage("Success");
 		updateEnrollmentResponseDto.setStatusCode("200");
 
-		return updateEnrollmentResponseDto;		
+		return updateEnrollmentResponseDto;
 	}
 
 	@Override
