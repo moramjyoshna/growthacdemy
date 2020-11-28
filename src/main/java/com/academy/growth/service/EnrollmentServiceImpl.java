@@ -2,20 +2,22 @@ package com.academy.growth.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
 import com.academy.growth.dto.EnrollmentRequestDto;
 import com.academy.growth.dto.EnrollmentResponseDto;
+import com.academy.growth.dto.EnrollmentsResponseDto;
 import com.academy.growth.entity.Course;
 import com.academy.growth.entity.Enrollment;
 import com.academy.growth.entity.TrainingCalendar;
 import com.academy.growth.exception.EnrollmentException;
+import com.academy.growth.exception.StudentNotFoundException;
 import com.academy.growth.repository.CourseRepository;
 import com.academy.growth.repository.EnrollmentRepository;
 import com.academy.growth.repository.TrainingCalendarRepository;
@@ -93,6 +95,13 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		enrollmentResponseDto.setStatusCode(HttpStatus.CREATED.value());
 
 		return enrollmentResponseDto;
+	}
+
+	@Override
+	public Map<String, List<EnrollmentsResponseDto>> getListofEnrollments(Integer studentId)
+			throws StudentNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
