@@ -5,6 +5,7 @@ public class GrowthAcademyConstants {
 	private GrowthAcademyConstants() {
 		throw new IllegalStateException("Utility class");
 	}
+	
 	public static final String TRAINING_DOES_NOT_EXISTS = "No such training exists presently";
 	public static final String COURSE_DOES_NOT_EXISTS = "No such course exists presently";
 	public static final String COURSE_ENROLLMENT_EXCEEDED = "Soory, you have exceeded the Scheduled courses you can enroll";
@@ -21,6 +22,11 @@ public class GrowthAcademyConstants {
 	public static final Integer STATUS_CODE_OK = 200;
 	public static final String LOGIN_SERVICE = "Inside training service";
 	public static final String LOGIN_CONTROLLER = "Inside Training controller";
+<<<<<<< HEAD
 	public static final String ENROLLEMENT_ALREADY_CANCELLED="Enrollment already cancelled";
+=======
+	public static final String ENROLLMENT_CONTROLLER = "Inside Enrollment controller";
+	public static final String STUDENT_NOT_FOUND = "Student ID doesn't exists";
+>>>>>>> efe60dd1f45047012a533a1f550a478e4e2b72af
 
 }

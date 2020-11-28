@@ -1,7 +1,7 @@
 package com.academy.growth.entity;
 
-import java.sql.Timestamp;
 import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
