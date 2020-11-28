@@ -10,10 +10,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
+import com.academy.growth.dto.EnrollmentRequestDto;
+import com.academy.growth.dto.EnrollmentResponseDto;
 import com.academy.growth.dto.UpdateEnrollmentRequestDto;
 import com.academy.growth.dto.UpdateEnrollmentResponseDto;
 import com.academy.growth.exception.DuplicateEnrollmentException;
+import com.academy.growth.exception.EnrollmentException;
 import com.academy.growth.exception.InvalidEnrollmentIdException;
 import com.academy.growth.service.EnrollmentService;
 
@@ -51,5 +56,13 @@ class EnrollmentControllerTest {
 		UpdateEnrollmentResponseDto actual = enrollmentService.updateEnrollment(updateEnrollmentRequestDto);
 		Assert.assertEquals("200", actual.getStatusCode());
 	}
+	 @Test
+	    public void courseEnrollmentTest() throws EnrollmentException {
+	        EnrollmentResponseDto enrollmentResponseDto = new EnrollmentResponseDto();
+	        EnrollmentRequestDto enrollmentRequestDto = new EnrollmentRequestDto();
+	        Mockito.when(enrollmentService.enroll(enrollmentRequestDto)).thenReturn(enrollmentResponseDto);
+	        ResponseEntity<EnrollmentResponseDto> enrollment = EnrollmentController.courseEnrollment(enrollmentRequestDto);
+	        Assert.assertEquals(HttpStatus.CREATED, enrollment.getStatusCode());        
+	    }
 
 }
