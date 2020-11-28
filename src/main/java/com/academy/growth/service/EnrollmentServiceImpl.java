@@ -113,6 +113,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		enrollment.setTrainingId(enrollmentRequestDto.getTrainingId());
 
 		Enrollment studentEnrollment = enrollmentRepository.save(enrollment);
+		logger.info("Enrolled successfully");
 
 		EnrollmentResponseDto enrollmentResponseDto = new EnrollmentResponseDto();
 		enrollmentResponseDto.setEnrollmentId(studentEnrollment.getEnrollmentId());

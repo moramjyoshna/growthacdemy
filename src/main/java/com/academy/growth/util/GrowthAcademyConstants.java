@@ -28,7 +28,7 @@ public class GrowthAcademyConstants {
 	public static final String SCHEDULED = "SCHEDULED";
 	public static final String IN_PROGRESS = "IN PROGRESS";
 	public static final String COURSE_ALREADY_ENROLLED = "You have already enrolled to the course";
-
+	public static final String ENROLL_SUCCESS= "Enrolled sucessfully";
 	public static final String NO_ENROLLMENT_ID_EXCEPTION = "No such enrollment id found";
 	public static final String ALREADY_ENROLLED_EXCEPTION = "Already enrolled with the same course";
 
