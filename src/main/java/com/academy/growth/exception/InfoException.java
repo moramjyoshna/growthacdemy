@@ -1,6 +1,6 @@
 package com.academy.growth.exception;
 
-public class InfoException extends Exception{
+public class InfoException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 

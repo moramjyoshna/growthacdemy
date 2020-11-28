@@ -17,4 +17,12 @@ public class GlobalExceptionHandler extends Exception {
 		ErrorResponse error = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<>(error, HttpStatus.OK);
 	}
+
+	@ExceptionHandler(TrainingInfoNotFoundException.class)
+	public ResponseEntity<ErrorResponse> TrainingInfoNotFoundException(TrainingInfoNotFoundException e,
+			WebRequest request) {
+
+		ErrorResponse error = new ErrorResponse(e.getMessage(), HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<>(error, HttpStatus.OK);
+	}
 }
