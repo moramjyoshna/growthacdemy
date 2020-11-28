@@ -24,5 +24,8 @@ public class GrowthAcademyConstants {
 	public static final String LOGIN_CONTROLLER = "Inside Training controller";
 	public static final String ENROLLMENT_CONTROLLER = "Inside Enrollment controller";
 	public static final String STUDENT_NOT_FOUND = "Student ID doesn't exists";
+	public static final String SCHEDULED = "SCHEDULED";
+	public static final String IN_PROGRESS = "IN PROGRESS";
+	public static final String COURSE_ALREADY_ENROLLED = "You have already enrolled to the course";
 
 }

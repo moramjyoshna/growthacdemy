@@ -35,7 +35,7 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 	CourseRepository courseRepository;
 
 	@Autowired
-	EnrollmentRepository studentEnrollmentRepository;
+	EnrollmentRepository enrollmentRepository;
 
 	@Override
 	public EnrollmentResponseDto enroll(EnrollmentRequestDto enrollmentRequestDto) throws EnrollmentException {
@@ -70,23 +70,28 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		}
 		
 		//Get the count of the no of scheduled courses for the student, if any
-		Integer count = studentEnrollmentRepository.getScheduledCoursesCount(enrollmentRequestDto.getStudentId(), "SCHEDULED");
+		Integer count = enrollmentRepository.getScheduledCoursesCount(enrollmentRequestDto.getStudentId(), GrowthAcademyConstants.SCHEDULED);
 		
 		if (count >= 3) {
 			logger.info(GrowthAcademyConstants.COURSE_ENROLLMENT_EXCEEDED);
 			throw new EnrollmentException(GrowthAcademyConstants.COURSE_ENROLLMENT_EXCEEDED);
 		}
 		
+		Optional<Enrollment> enrollmentStatus = enrollmentRepository.checkEnrollmentStatus(enrollmentRequestDto.getStudentId(), enrollmentRequestDto.getTrainingId(), GrowthAcademyConstants.SCHEDULED, 
+				GrowthAcademyConstants.IN_PROGRESS);
 		
+		if(enrollmentStatus.isPresent()) {
+			throw new EnrollmentException(GrowthAcademyConstants.COURSE_ALREADY_ENROLLED);
+		}
 		
 		Enrollment enrollment = new Enrollment();
 		enrollment.setCourseCode(traingCalendarDetails.get().getCourseCode());
 		enrollment.setCourseName(courseDetails.get().getCourseName());
-		enrollment.setEnrollmentStatus("SCHEDULED");
+		enrollment.setEnrollmentStatus(GrowthAcademyConstants.SCHEDULED);
 		enrollment.setStudentId(enrollmentRequestDto.getStudentId());
 		enrollment.setTrainingId(enrollmentRequestDto.getTrainingId());
 
-		Enrollment studentEnrollment = studentEnrollmentRepository.save(enrollment);
+		Enrollment studentEnrollment = enrollmentRepository.save(enrollment);
 
 		EnrollmentResponseDto enrollmentResponseDto = new EnrollmentResponseDto();
 		enrollmentResponseDto.setEnrollmentId(studentEnrollment.getEnrollmentId());

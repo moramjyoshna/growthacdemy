@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 import com.academy.growth.dto.CancelEnrollmentResponseDTO;
 import com.academy.growth.entity.Enrollment;
 
-@Repository("studentEnrollmentRepository")
+@Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>{
 	
 	@Query("SELECT COUNT(*)FROM Enrollment e WHERE  e.studentId = :studentId AND e.enrollmentStatus = :enrollmentStatus")
 	public Integer getScheduledCoursesCount(@Param("studentId") Integer studentId, @Param("enrollmentStatus") String enrollmentStatus);
 	
-	@Query("SELECT FROM Enrollment e WHERE  e.studentId = :studentId AND e.enrollmentStatus = :enrollmentStatus")
-	public Optional<Enrollment> checkEnrollmentStatus(@Param("studentId") Integer studentId, @Param("enrollmentStatus") String enrollmentStatus);
+	@Query("SELECT e FROM Enrollment e WHERE  e.studentId = :studentId AND e.trainingId = :trainingId AND (e.enrollmentStatus = :scheduledEnrollmentStatus OR e.enrollmentStatus = :progressEnrollmentStatus) ")
+	public Optional<Enrollment> checkEnrollmentStatus(@Param("studentId") Integer studentId, @Param("trainingId") Integer trainingId, @Param("scheduledEnrollmentStatus") String scheduledEnrollmentStatus,@Param("progressEnrollmentStatus") String progressEnrollmentStatus );
 
 	CancelEnrollmentResponseDTO findByEnrollmentId(Integer enrollmentId);
 	
