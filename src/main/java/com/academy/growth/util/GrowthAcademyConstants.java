@@ -22,8 +22,12 @@ public class GrowthAcademyConstants {
 	public static final Integer STATUS_CODE_OK = 200;
 	public static final String LOGIN_SERVICE = "Inside training service";
 	public static final String LOGIN_CONTROLLER = "Inside Training controller";
+	public static final String ENROLLEMENT_ALREADY_CANCELLED="Enrollment already cancelled";
 	public static final String ENROLLMENT_CONTROLLER = "Inside Enrollment controller";
 	public static final String STUDENT_NOT_FOUND = "Student ID doesn't exists";
+	public static final String SCHEDULED = "SCHEDULED";
+	public static final String IN_PROGRESS = "IN PROGRESS";
+	public static final String COURSE_ALREADY_ENROLLED = "You have already enrolled to the course";
 
 	public static final String NO_ENROLLMENT_ID_EXCEPTION = "No such enrollment id found";
 	public static final String ALREADY_ENROLLED_EXCEPTION = "Already enrolled with the same course";
