@@ -163,21 +163,34 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 		}
 	}
 
+	/**
+	 * This method updates the training if existing user wants to change the
+	 * existing trainingId
+	 * 
+	 * @author Manisha
+	 * @param updateEnrollmentRequestDto
+	 * 
+	 * @throws InvalidEnrollmentIdException when EnrollmentID not found in database
+	 *                                      & DuplicateEnrollmentException when user
+	 *                                      is updating with same existing session
+	 * @return UpdateEnrollmentResponseDto will return the response of successfully
+	 *         updated the Training
+	 */
 	@Override
 	public UpdateEnrollmentResponseDto updateEnrollment(UpdateEnrollmentRequestDto updateEnrollmentRequestDto)
 			throws InvalidEnrollmentIdException, DuplicateEnrollmentException {
 		UpdateEnrollmentResponseDto updateEnrollmentResponseDto = new UpdateEnrollmentResponseDto();
-
+		logger.info(GrowthAcademyConstants.ENROLLMENT_UPDATE_SERVICE);
 		Optional<Enrollment> enrolledRecord = enrollmentRepository
 				.findByEnrollmentId(updateEnrollmentRequestDto.getEnrollmentId());
 		if (enrolledRecord.isPresent()) {
 			if (updateEnrollmentRequestDto.getTrainingId() != enrolledRecord.get().getTrainingId()) {
 				enrolledRecord.get().setTrainingId(updateEnrollmentRequestDto.getTrainingId());
 				enrollmentRepository.save(enrolledRecord.get());
-			} else {
+			} else
 				throw new DuplicateEnrollmentException(GrowthAcademyConstants.ALREADY_ENROLLED_EXCEPTION);
-			}
 		} else {
+			logger.info(GrowthAcademyConstants.ENROLLMENT_ID_NOT_EXIST);
 			throw new InvalidEnrollmentIdException(GrowthAcademyConstants.NO_ENROLLMENT_ID_EXCEPTION);
 		}
 		updateEnrollmentResponseDto.setMessage("Success");
@@ -187,25 +200,27 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 	}
 
 	@Override
-	public Optional<CancelEnrollmentResponseDTO> cancelEnrollment(Integer enrollmentId)
-			throws EnrollmentIdNotFoundException {
+	public CancelEnrollmentResponseDTO cancelEnrollment(Integer enrollmentId) throws EnrollmentIdNotFoundException {
 
 		logger.info(GrowthAcademyConstants.CANCEL_ENROLLMENTT_SERVICE);
+		CancelEnrollmentResponseDTO cancelEnrollmentResponseDTO = new CancelEnrollmentResponseDTO();
 		Optional<Enrollment> enrollment = enrollmentRepository.findByEnrollmentId(enrollmentId);
-		if (!enrollment.isPresent()) {
+
+		if (enrollment.isPresent()) {
+			if (enrollment.get().getEnrollmentStatus() != "CANCELLED") {
+				enrollment.get().setEnrollmentStatus("CANCELLED");
+				enrollmentRepository.save(enrollment.get());
+			} else
+				throw new EnrollmentIdNotFoundException(GrowthAcademyConstants.ENROLLEMENT_ALREADY_CANCELLED);
+		} else {
 			throw new EnrollmentIdNotFoundException(GrowthAcademyConstants.ENROLLMENT_INFO_NOT_EXIST);
 		}
-		if (enrollment.get().getEnrollmentStatus().equals("CANCELLED")) {
-			throw new EnrollmentIdNotFoundException(GrowthAcademyConstants.ENROLLEMENT_ALREADY_CANCELLED);
-		}
-		enrollment.get().setEnrollmentStatus("CANCELLED");
-		enrollmentRepository.save(enrollment.get());
-		CancelEnrollmentResponseDTO cancelEnrollmentResponseDTO = new CancelEnrollmentResponseDTO();
 		cancelEnrollmentResponseDTO.setCourseName(enrollment.get().getCourseName());
 		cancelEnrollmentResponseDTO.setEnrollmentStatus(enrollment.get().getEnrollmentStatus());
 		cancelEnrollmentResponseDTO.setMessage("Success");
 		cancelEnrollmentResponseDTO.setStatusCode(200);
-		return Optional.of(cancelEnrollmentResponseDTO);
+
+		return cancelEnrollmentResponseDTO;
 	}
 
 }
