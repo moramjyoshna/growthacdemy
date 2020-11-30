@@ -2,7 +2,6 @@ package com.academy.growth.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,8 +24,8 @@ import com.academy.growth.dto.UpdateEnrollmentRequestDto;
 import com.academy.growth.dto.UpdateEnrollmentResponseDto;
 import com.academy.growth.exception.DuplicateEnrollmentException;
 import com.academy.growth.exception.EnrollmentException;
-import com.academy.growth.exception.InvalidEnrollmentIdException;
 import com.academy.growth.exception.EnrollmentIdNotFoundException;
+import com.academy.growth.exception.InvalidEnrollmentIdException;
 import com.academy.growth.exception.StudentNotFoundException;
 import com.academy.growth.service.EnrollmentService;
 import com.academy.growth.util.GrowthAcademyConstants;
@@ -50,42 +49,48 @@ public class EnrollmentController {
 		EnrollmentResponseDto enrollmentResponseDto = enrollmentService.enroll(enrollmentRequestDto);
 		return new ResponseEntity<>(enrollmentResponseDto, HttpStatus.CREATED);
 	}
-	
-	
+
 	/**
-	 * This method views the student's enrollment history grouped by the enrollment status
+	 * This method views the student's enrollment history grouped by the enrollment
+	 * status
 	 * 
 	 * @author swathi
 	 * @param studentId contains studentId
 	 * 
 	 * @throws StudentNotFoundException thrown when student not found
-	 * @return EnrollmentsResponseDto contains enrollment history grouped by the enrollment status.
+	 * @return EnrollmentsResponseDto contains enrollment history grouped by the
+	 *         enrollment status.
 	 */
-	@GetMapping("/enrollments/{studentId}")
-	public Map<String, List<EnrollmentsResponseDto>> getListofEnrollments(@RequestParam("studentId") Integer studentId)
+	@GetMapping("/student/{studentId}/enrollments")
+	public Map<String, List<EnrollmentsResponseDto>> getListofEnrollments(@PathVariable("studentId") Integer studentId)
 			throws StudentNotFoundException {
 		return enrollmentService.getListofEnrollments(studentId);
 	}
-	
+
 	/**
-	 * This method updates the training if existing user wants to change the existing trainingId
+	 * This method updates the training if existing user wants to change the
+	 * existing trainingId
 	 * 
 	 * @author Manisha
 	 * @param updateEnrollmentRequestDto
 	 * 
-	 * @throws InvalidEnrollmentIdException when EnrollmentID not found in database & DuplicateEnrollmentException when user is updating with same existing session
-	 * @return UpdateEnrollmentResponseDto will return the response of successfully updated the Training 
+	 * @throws InvalidEnrollmentIdException when EnrollmentID not found in database
+	 *                                      & DuplicateEnrollmentException when user
+	 *                                      is updating with same existing session
+	 * @return UpdateEnrollmentResponseDto will return the response of successfully
+	 *         updated the Training
 	 */
 	@PutMapping("/enrollments/re-enroll")
-	public ResponseEntity<UpdateEnrollmentResponseDto> updateEnrollment(@RequestBody UpdateEnrollmentRequestDto updateEnrollmentRequestDto) throws InvalidEnrollmentIdException, DuplicateEnrollmentException
-	{
+	public ResponseEntity<UpdateEnrollmentResponseDto> updateEnrollment(
+			@RequestBody UpdateEnrollmentRequestDto updateEnrollmentRequestDto)
+			throws InvalidEnrollmentIdException, DuplicateEnrollmentException {
 		logger.info(GrowthAcademyConstants.ENROLLMENT_CONTROLLER);
 		return new ResponseEntity<>(enrollmentService.updateEnrollment(updateEnrollmentRequestDto), HttpStatus.OK);
 	}
 
 	@PostMapping("/cancel/{enrollmentId}")
-	public ResponseEntity<CancelEnrollmentResponseDTO> cancelEnrollment(@RequestParam("enrollmentId") Integer enrollmentId)
-			throws EnrollmentIdNotFoundException {
+	public ResponseEntity<CancelEnrollmentResponseDTO> cancelEnrollment(
+			@RequestParam("enrollmentId") Integer enrollmentId) throws EnrollmentIdNotFoundException {
 		logger.info(GrowthAcademyConstants.ENROLLMENT_INFO_NOT_EXIST);
 		CancelEnrollmentResponseDTO enrollment = enrollmentService.cancelEnrollment(enrollmentId);
 		return new ResponseEntity<>(enrollment, HttpStatus.OK);

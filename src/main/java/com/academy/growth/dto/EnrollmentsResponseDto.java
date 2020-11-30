@@ -48,4 +48,16 @@ public class EnrollmentsResponseDto {
 		this.courseCode = courseCode;
 	}
 
+	public EnrollmentsResponseDto(String courseName, Integer studentId, String enrollmentStatus, Integer trainingId,
+			String courseCode) {
+		super();
+		this.courseName = courseName;
+		this.studentId = studentId;
+		this.enrollmentStatus = enrollmentStatus;
+		this.trainingId = trainingId;
+		this.courseCode = courseCode;
+	}
+
+	public EnrollmentsResponseDto() {
+	}
 }

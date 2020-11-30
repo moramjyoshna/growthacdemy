@@ -2,7 +2,6 @@ package com.academy.growth.service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -132,27 +131,9 @@ public class EnrollmentServiceImpl implements EnrollmentService {
 	public Map<String, List<EnrollmentsResponseDto>> getListofEnrollments(Integer studentId)
 			throws StudentNotFoundException {
 
-		logger.info("To display List of Enrollments");
+		logger.info(GrowthAcademyConstants.ENROLLMENT_GET_SERVICE);
 
-		List<EnrollmentsResponseDto> responseList = new ArrayList<>();
-
-		List<Object> response = enrollmentRepository.getListofEnrollmentsGroupedByStatus(studentId);
-
-		if (!response.isEmpty()) {
-			for (int iLoop = 0; iLoop < response.size(); iLoop++) {
-
-				Object[] obj = (Object[]) response.get(iLoop);
-
-				EnrollmentsResponseDto responseDto = new EnrollmentsResponseDto();
-				responseDto.setCourseName(obj[0].toString());
-				responseDto.setStudentId(Integer.valueOf(obj[1].toString()));
-				responseDto.setEnrollmentStatus(obj[2].toString());
-				responseDto.setTrainingId(Integer.valueOf(obj[3].toString()));
-				responseDto.setCourseCode(obj[4].toString());
-
-				responseList.add(responseDto);
-			}
-		}
+		List<EnrollmentsResponseDto> responseList = enrollmentRepository.getListofEnrollmentsGroupedByStatus(studentId);
 
 		Optional<Student> student = studentRepository.findById(studentId);
 		if (!student.isPresent()) {

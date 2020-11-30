@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.academy.growth.dto.EnrollmentsResponseDto;
 import com.academy.growth.entity.Enrollment;
 
 @Repository
@@ -29,7 +30,7 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Integer>
 
 	public Optional<Enrollment> findByEnrollmentId(Integer enrollmentId);
 
-	@Query("select e.courseName,e.studentId,e.enrollmentStatus,e.trainingId,e.courseCode from Enrollment e where e.studentId = :studentId ")
-	public List<Object> getListofEnrollmentsGroupedByStatus(@Param("studentId") Integer studentId);
+	@Query("select New com.academy.growth.dto.EnrollmentsResponseDto (e.courseName,e.studentId,e.enrollmentStatus,e.trainingId,e.courseCode) from Enrollment e where e.studentId = :studentId ")
+	public List<EnrollmentsResponseDto> getListofEnrollmentsGroupedByStatus(@Param("studentId") Integer studentId);
 
 }
